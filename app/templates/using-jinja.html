@@ -1,0 +1,53 @@
+{% extends "base-template.html" %}
+
+{% block title %}Using Jinja{% endblock title %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Using Jinja</h1>
+            <p>Jinja is a powerful and widely-used template engine for Python. It is primarily used in web development to generate dynamic HTML, XML, or other markup formats. Jinja allows developers to embed logic, variables, and control structures within templates, which are then rendered to produce the final output displayed in a web browser.</p>
+            
+            <h2>Accessing variables</h2>
+            <p>Any variables that are passed to the html file can be accesses using Jinja</p>
+            <p>Welcome, {{ user_info.username }}</p>
+
+            <!-- Variable Substitution -->
+            <h2>Conditional Statements</h2>
+            <p>We can use conditionals to only show elements based on a condition</p>
+            {% if user_info.full_name %}
+            <p>Full Name: {{ user_info.full_name }}</p>
+            {% endif %}
+
+            <!-- Using Loops -->
+            <h2>Loops</h2>
+            <p>We can loop through variables, much as we would in python</p>
+            <h4>Interests</h4>
+            <ul>
+                {% for interest in ['Python', 'Web Development', 'Flask'] %}
+                    <li>{{ interest }}</li>
+                {% endfor %}
+            </ul>
+
+            <!-- Using Filters -->
+            <h2>Filters</h2>
+            <p>Jinja filters can be used to change variables e.g. reverse</p>
+            <p>Bio: {{ user_info.bio|reverse }}</p>
+
+            <!-- Using Filters with Arguments -->
+            <h2>Filters with Arguments</h2>
+            <p>Some filters take arguments, such as replace</p>
+            <p>Email: {{ user_info.email|replace('example', 'gmail') }}</p>
+
+            <!-- Using Macros (Reusable Blocks) -->
+            <h2>Macros (Reusable Blocks)</h2>
+            <p>Macros provide resulable blocks of jinja, these can even be written in a seperate html file and imported</p>
+            {% macro display_website_link(url) %}
+                <a href="{{ url }}" target="_blank">{{ url }}</a>
+            {% endmacro %}
+            <p>Website: {{ display_website_link(user_info.website) }}</p>
+        </div>
+    </div>
+</div>
+{% endblock main %}

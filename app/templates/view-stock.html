@@ -1,0 +1,156 @@
+{% extends 'base-template.html' %}
+
+{% block title %}View Stock{% endblock title %}
+
+{% block main %}
+<h1 class="mb-4">Stock Submenu</h1>
+
+<div class="alert alert-warning" role="alert" id="warning-message">
+    {% if low_stock_ingredients %}
+    <p>Warning: The following ingredients are low in stock: {{ low_stock_ingredients|join(', ') }}.</p>
+    {% endif %}
+</div>
+
+<div class="input-group mb-3">
+    <label for="ingredient-search" class="input-group-text">Search by Ingredient Name:</label>
+    <input type="text" class="form-control" id="ingredient-search" name="ingredient-search"
+        placeholder="Enter ingredient name..." onkeyup="filterTable()">
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <div>
+        <button id="sort-by-expiry" class="btn btn-primary mb-2">Sort by Expiry Date</button>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <div>
+        <button id="restock-button" class="btn btn-success" onclick="restock()">Restock</button>
+    </div>
+</div>
+
+
+
+<div class="table-responsive mt-4">
+    <h2>Current Stock</h2>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 15%;">Ingredient ID</th>
+                <th style="width: 30%;">Ingredient Name</th>
+                <th style="width: 15%;">Expiry Date</th>
+                <th style="width: 10%;">Quantity</th>
+                <th style="width: 10%;">Low Threshold</th>
+                <th style="width: 10%;">Units</th>
+            </tr>
+        </thead>
+        <tbody id="table-content">
+            {% for stock in stock_data %}
+            <tr class="{% if stock.quantity < stock.low_threshold %}table-danger{% endif %}">
+                <td>{{ stock.ingredient_id }}</td>
+                <td>{{ stock.ingredient_name }}</td>
+                <td>{{ stock.expiry_date }}</td>
+                <td>{{ stock.quantity }}</td>
+                <td>{{ stock.low_threshold }}</td>
+                <td>{{ stock.units }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    var lowStockIngredients = {{ low_stock_ingredients| tojson | safe }};
+
+    function filterTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("ingredient-search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table-content");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) { // Start from 1 to skip header row
+            td = tr[i].getElementsByTagName("td")[1]; // Get the second column (Ingredient Name)
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function updateHighlighting() {
+        var table = document.getElementById("table-content");
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) {
+            var quantityCell = rows[i].getElementsByTagName("td")[3];
+            var thresholdCell = rows[i].getElementsByTagName("td")[4];
+            var quantity = parseInt(quantityCell.textContent || quantityCell.innerText);
+            var threshold = parseInt(thresholdCell.textContent || thresholdCell.innerText);
+
+            if (quantity < threshold) {
+                rows[i].classList.add("low-stock");
+            } else {
+                rows[i].classList.remove("low-stock");
+            }
+        }
+    }
+
+    // Update the warning message when the page loads or quantities change
+    window.addEventListener("load", function () {
+        updateHighlighting();
+        updateWarningMessage();
+    });
+
+    function updateWarningMessage() {
+        var warningMessage = document.getElementById("warning-message");
+
+        if (lowStockIngredients.length > 0) {
+            warningMessage.style.display = "block";
+        } else {
+            warningMessage.style.display = "none";
+        }
+    }
+
+    // Add an event listener to the button
+    document.getElementById("restock-button").addEventListener("click", function () {
+        // Make a request to the restock endpoint
+        fetch('/restock')
+        // For example, you can display a message to the user
+        alert("Stock restock initiated");
+
+    });
+
+    // Call updateHighlighting() when the page loads or quantities change
+    window.addEventListener("load", updateHighlighting);
+    document.addEventListener("DOMContentLoaded", function () {
+        const sortByExpiryButton = document.getElementById("sort-by-expiry");
+        const table = document.getElementById("table-content");
+        const tableRows = table.querySelectorAll("tr:not(:first-child)");
+
+        sortByExpiryButton.addEventListener("click", function () {
+            const sortedRows = Array.from(tableRows).slice(0); // Clone the rows array
+            sortedRows.sort(function (a, b) {
+                const dateA = new Date(a.cells[2].textContent);
+                const dateB = new Date(b.cells[2].textContent);
+                return dateA - dateB;
+            });
+
+            tableRows.forEach(function (row) {
+                row.remove();
+            });
+
+            sortedRows.forEach(function (row) {
+                table.appendChild(row);
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

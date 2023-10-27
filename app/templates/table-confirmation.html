@@ -1,0 +1,18 @@
+{% extends 'base-template.html' %}
+
+{% block title %}Table Confirmation{% endblock title %}
+
+{% block main %}
+    <div class="container">
+        <h1 class="mt-4">Table Confirmation</h1>
+        <div class="jumbotron mt-4">
+            <h2 class="display-4">Booking:</h2>
+            <p class="lead"><strong>Date:</strong> {{ confirmation_details.date }}</p>
+            <p class="lead"><strong>Time:</strong> {{ confirmation_details.time }}</p>
+            <p class="lead"><strong>Party size:</strong> {{ confirmation_details.party_size }}</p>
+            <p class="lead"><strong>Additional comments:</strong> {{ confirmation_details.comment }}</p>
+            <p class="lead"><strong>Assigned table(s):</strong> {{ confirmation_details.assigned_tables }}</p>
+        </div>
+    </div>
+{% endblock %}
+

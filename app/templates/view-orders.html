@@ -1,0 +1,69 @@
+{% extends 'base-template.html' %}
+    
+{% block title %}View Orders{% endblock %}
+
+{% block main %}
+    <h1>Today's Orders</h1>
+    
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="open-orders-tab" data-bs-toggle="tab" href="#open-orders">Open Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="closed-orders-tab" data-bs-toggle="tab" href="#closed-orders">Closed Orders</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="open-orders" class="tab-pane active">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Table ID</th>
+                            <th style="width: 30%;">Item Name</th>
+                            <th style="width: 10%;">Price</th>
+                            <th style="width: 10%;">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in open_orders_data %}
+                        <tr>
+                            <td>{{ order.table_id }}</td>
+                            <td>{{ order.menu_item_name }}</td>
+                            <td>{{ order.price }}</td>
+                            <td>{{ order.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="closed-orders" class="tab-pane">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Table ID</th>
+                            <th style="width: 30%;">Item Name</th>
+                            <th style="width: 10%;">Price</th>
+                            <th style="width: 10%;">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in closed_orders_data %}
+                        <tr>
+                            <td>{{ order.table_id }}</td>
+                            <td>{{ order.menu_item_name }}</td>
+                            <td>{{ order.price }}</td>
+                            <td>{{ order.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

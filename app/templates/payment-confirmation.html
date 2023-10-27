@@ -1,0 +1,14 @@
+{% extends 'base-template.html' %}
+
+{% block title %}Payment Confirmation{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <h1 class="mt-4">Payment Successful!</h1>
+        <div class="jumbotron mt-4">
+            <h2 class="display-4">Thank you for your payment. :</h2>
+            <p class="lead"><strong>Total Amount:</strong> {{ total_amount }}</p>
+            <p class="lead"><strong>Table ID:</strong> {{ table_id }}</p>
+        </div>
+    </div>
+{% endblock %}

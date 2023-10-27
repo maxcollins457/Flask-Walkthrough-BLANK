@@ -1,0 +1,280 @@
+{% extends 'base-template.html' %}
+
+{% block title %}New Order{% endblock %}
+
+{% block main %}
+<h1 class="mb-4">Add a New Order</h1>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" id="dip-tab" data-bs-toggle="tab" href="#dip">Dip</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="salad-tab" data-bs-toggle="tab" href="#salad">Salad</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="main-tab" data-bs-toggle="tab" href="#main">Main Courses</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="cold-meze-tab" data-bs-toggle="tab" href="#cold-meze">Cold Meze</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="hot-meze-tab" data-bs-toggle="tab" href="#hot-meze">Hot Meze</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="drink-tab" data-bs-toggle="tab" href="#drink">Drinks</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="add-on-tab" data-bs-toggle="tab" href="#add-on">Add-ons</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div id="dip" class="tab-pane active">
+        <div class="row">
+            {% for item in menu_data.dip %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="salad" class="tab-pane">
+        <div class="row">
+            {% for item in menu_data.salad %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="add-on" class="tab-pane">
+        <div class="row">
+            {% for item in menu_data.add_on %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="main" class="tab-pane">
+        <div class="row">
+            {% for item in menu_data.main %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="cold-meze" class="tab-pane">
+        <div class="row">
+            {% for item in menu_data.cold_meze %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="hot-meze" class="tab-pane">
+        <div class="row">
+            {% for item in menu_data.hot_meze %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="drink" class="tab-pane">
+        <div class="row">
+            {% for item in menu_data.drink %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        {% if item[3] == 'Out of Stock' %}
+                        <h5 class="card-title text-danger">{{ item[1] }}</h5>
+                        {% else %}
+                        <h5 class="card-title">{{ item[1] }}</h5>
+                        <button class="btn btn-primary"
+                            onclick="addToOrder('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}')">Add to
+                            Order</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <label for="table-dropdown" class="form-label">Select a table number:</label>
+        <select id="table-dropdown" class="form-select" onchange="updateSelectedTable()">
+            <option value="" selected disabled>Select a table...</option>
+            {% for table_number in table_numbers %}
+            <option value="{{ table_number }}">{{ table_number }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="table-responsive mt-4">
+    <h2>Current Order:</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="table-content">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-success" id="confirm-order-btn" onclick="confirmOrder()">Confirm Order</button>
+    <button class="btn btn-danger" id="clear-order-btn" onclick="clearOrder()">Clear Order</button>
+</div>
+
+<script>
+    var current_order = [];
+    var selectedTable = null;
+
+    function updateSelectedTable() {
+        var dropdown = document.getElementById("table-dropdown");
+        selectedTable = dropdown.value;
+    }
+
+    function clearOrder() {
+        current_order = [];
+        updateOrderTable();
+    }
+
+
+    function addToOrder(itemId, itemName, itemPrice) {
+        current_order.push({ id: itemId, name: itemName, price: itemPrice});
+        updateOrderTable();
+    }
+
+    function updateOrderTable() {
+        var table = document.getElementById("table-content");
+        // Clear existing rows except the header
+        while (table.rows.length >= 1) {
+            table.deleteRow(0);
+        }
+        // Add items from current_order to the table
+        for (var i = 0; i < current_order.length; i++) {
+            var row = table.insertRow(-1);
+            var idCell = row.insertCell(0);
+            var nameCell = row.insertCell(1);
+            var priceCell = row.insertCell(2);
+            nameCell.innerHTML = current_order[i].name;
+            idCell.innerHTML = current_order[i].id;
+            priceCell.innerHTML = current_order[i].price;
+        }
+    }
+
+    function confirmOrder() {
+        if (selectedTable === null || selectedTable === "") {
+            alert("Please select a valid table number.");
+            return; // Exit the function if no table number is selected
+        }
+
+        var itemData = current_order.map(item => {
+            return { id: item.id};
+        });
+
+        // Include the selected table number in the request data
+        var requestData = {
+            "items": itemData,
+            "tableNumber": selectedTable
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/confirm_order', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                clearOrder();
+            }
+        };
+        xhr.send(JSON.stringify(requestData));
+    }
+</script>
+{% endblock %}

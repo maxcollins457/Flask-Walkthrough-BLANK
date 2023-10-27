@@ -1,0 +1,128 @@
+{% extends 'base-template.html' %}
+    
+{% block title %}Payment{% endblock title %}
+
+{% block main %}
+    <div class="container">
+        <h1 class="mt-4">Payment</h1>
+
+        <div class="form-group">
+            <label for="table-dropdown">Select a table number:</label>
+            <select class="form-control" id="table-dropdown" onchange="updateSelectedTable()">
+                <option value="" selected disabled>Select a table...</option>
+                {% for table in table_numbers %}
+                    <option value="Table {{ table }}">Table {{ table }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="table-responsive" id="table-display">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Order ID</th>
+                        <th style="width: 15%;">Table ID</th>
+                        <th style="width: 30%;">Item Name</th>
+                        <th style="width: 10%;">Price</th>
+                        <th style="width: 10%;">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if selectedTable %}
+                        {% for order in open_orders %} 
+                            {% if order.table_id == selectedTable %}
+                                <tr>
+                                    <td>{{ order.order_id }}</td>
+                                    <td>{{ order.table_id }}</td>
+                                    <td>{{ order.menu_item_name }}</td>
+                                    <td>{{ order.price }}</td>
+                                    <td>{{ order.quantity }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        <tr id="total-row">
+                            <td colspan="4">Total</td>
+                            <td id="total-amount">{{ totals[selectedTable] }}</td>
+                        </tr>
+                    {% else %}
+                        {% for order in open_orders %} 
+                            <tr>
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.table_id }}</td>
+                                <td>{{ order.menu_item_name }}</td>
+                                <td>{{ order.price }}</td>
+                                <td>{{ order.quantity }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        
+        
+        <form id="pay-total-form" method="post" action="{{ url_for('payment.pay_total') }}">
+            <input type="hidden" name="table_id" id="table-id-input" value="">
+            <input type="hidden" name="total_cost" id="total-cost-input" value="">
+            <div class="text-center">
+                <button class="btn btn-primary pay-button" onclick="submitPayTotalForm()">Pay Total</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <script>
+        var selectedTable = null;
+        var totalAmount = null;
+      
+        function updateSelectedTable() {
+          var dropdown = document.getElementById("table-dropdown");
+          selectedTable =  extractTableNumber(dropdown.value); // Extract table number from dropdown value
+          updateTableDisplay();
+        }
+
+        function extractTableNumber(tableString) {
+            var tableNumberMatch = tableString.match(/\d+/); // Use regex to extract numeric part
+            if (tableNumberMatch !== null) {
+                var tableNumber = parseInt(tableNumberMatch[0]); // Parse the matched numeric part
+                return tableNumber;
+            } else {
+                return null; // Or any other default value or appropriate handling
+            }
+        }
+      
+        function updateTableDisplay() {
+            var table = document.getElementById("table-display");
+            var rows = table.getElementsByTagName("tr");
+            for (var i = 1; i < rows.length; i++) {
+                var tableIdCell = rows[i].getElementsByTagName("td")[1];
+                if (tableIdCell) {
+                    var tableId = extractTableNumber(tableIdCell.innerText); // Extract numeric part from cell text
+                    if (selectedTable === null || tableId === selectedTable) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+
+        function submitPayTotalForm() {
+            // Get the form and input elements
+            var form = document.getElementById("pay-total-form");
+            var tableIdInput = document.getElementById("table-id-input");
+            var totalCostInput = document.getElementById("total-cost-input")
+
+            // Set the value of the table_id input to the selectedTable
+            tableIdInput.value = selectedTable;
+            totalCostInput.value = totalAmount;
+
+            // Submit the form
+            form.submit();
+        }
+        
+
+    </script>
+{% endblock %}
