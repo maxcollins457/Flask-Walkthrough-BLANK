@@ -25,5 +25,5 @@ if __name__ == '__main__':
 ```
 
 ## Useful links to documentation
-[Flask](https://flask.palletsprojects.com/en/3.0.x/quickstart/)
-[Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+Flask documentation for quickstart: [Flask](https://flask.palletsprojects.com/en/3.0.x/quickstart/)
+Bootstrap for HTML, JS and CSS: [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
